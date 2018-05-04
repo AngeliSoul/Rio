@@ -1,0 +1,73 @@
+
+# include <math.h>
+# define pi 3.1415
+main( )
+{
+double a1,b1,B=3,R=60.294,r=2.41176,n=14,cl,cd,rou=1.037,v=12;
+double p,p1,cp,cp1,q,q1,q2,ri,numri,g1,g2,cgm,Ft,Fh,F,H,C;
+double a0=0.18,b0=0.0000,x1,x2;
+double numR=pi*n*R/(30*v),w=n*pi/30;
+int i;
+for(i=0;i<=20;i++)
+
+ {   
+  if(i<=19)
+  
+  ri=12.0588+2.41176*i;
+  else  ri=60;
+    numri=numR*ri/R;
+    if (i>15) cl=1.2674,cd=0.01066,q2=6;
+    else if (i>4) cl=1.277,cd=0.01235,q2=8.25;
+    else cl=1.0552,cd=0.01645,q2=10;
+do
+    {   
+     q=(atan((1-a0)/((1+b0)*numri)))*180/pi;
+     q1=q-q2;
+        Ft=2*(acos(exp(-(B)*(R-ri)/(2*R*sin(q*pi/180)))))/pi;
+        Fh=2*(acos(exp(-(B)*(ri-r)/(2*r*sin(q*pi/180)))))/pi;
+        F=Ft*Fh;
+C=8*pi*ri*a0*F*(1-a0*F)*sin(q*pi/180)*sin(q*pi/180)/((1-a0)*(1-a0)*(cos(q*pi/180))*B*cl);
+       cgm=B*C/(2*pi*ri);
+       H=4*a0*(1-a0)/(0.6+0.61*a0+0.79*a0*a0);
+        if(a0>0.3539)
+g1=cgm*(cl*cos(q*pi/180)+cd*sin(q*pi/180))/(4*F*(sin(q*pi/180))*(sin(q*pi/180)))*H; 
+        else
+g1=cgm*(cl*cos(q*pi/180)+cd*sin(q*pi/180))/(4*F*(sin(q*pi/180))*(sin(q*pi/180)));
+g2=cgm*(cl*(sin(q*pi/180))-cd*(cos(q*pi/180)))/(4*F*(sin(q*pi/180))*(cos(q*pi/180)));
+        a1=g1/(1+g1);
+   b1=g2/(1+g2);
+        x1=fabs(a1-a0);
+        x2=fabs(b1-b0); 
+        a0=a1;b0=b1;  
+    } 
+    while (x1>0.001&&x2>0.001);
+   //T=4*pi*rou*ri*v*v(1-a0)a0*2;
+   //M=4*pi*rou*ri*ri*ri*v*w(1-a0)*b0*2;
+    if(v<=12)
+   {p=4*pi*rou*w*w*v*b0*(1-a0)*ri*ri*ri*2.41176*F;p1=p+p1;
+   cp1=2*p/(rou*v*v*v*pi*R*R);
+     printf("ri=%.2lf   ",ri);
+       printf("q=%.2lf    ",q);
+       printf("q1=%.2lf   ",q1);
+       printf("q2=%.3lf   ",q2);
+       printf("c=%.3lf    ",C);
+       printf("a0=%.3lf   ",a0);
+       printf("b0=%.3lf   ",b0);
+       printf("p=%lf",p);
+       printf("cp=%lf",cp1);
+       printf("F=%lf",F);
+       printf("numR=%lf",numR);
+       printf("Ft=%lf",Ft);
+       printf("Fh=%lf",Fh);
+       printf("\n");     
+         }
+   else
+   { cp=2*p1/(rou*v*v*v*pi*R*R);
+    }
+         
+ }
+ cp=2*p1/(rou*v*v*v*pi*R*R);
+ printf("cp=%lf\n",cp);
+ printf("p1=%lf\n",p1); 
+ printf("\n");
+}
